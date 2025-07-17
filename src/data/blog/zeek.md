@@ -6,14 +6,11 @@ featured: true
 tags: [zeek, network-forensics, tools]
 ---
 
-Zeek is a powerful and flexible open-source network security monitoring platform. It passively analyzes network traffic to detect suspicious activity, policy violations, and other security-relevant events in real time. Unlike traditional intrusion detection systems, Zeek focuses on deep, protocol-level inspection and generates rich, structured logs that are ideal for threat hunting and incident response.
+[Zeek](https://zeek.org) is a powerful and flexible open-source network security monitoring platform. It passively analyzes network traffic to detect suspicious activity, policy violations, and other security-relevant events in real time. Unlike traditional intrusion detection systems, Zeek focuses on deep, protocol-level inspection and generates rich, structured logs that are ideal for threat hunting and incident response.
 
 <br>
 
 # Installation:
-
-<br>
-
 
 First, let's start by installing the necessary dependencies:
 
@@ -57,11 +54,11 @@ Run Zeek on your network interface:
 sudo /opt/zeek/bin/zeek -i eth0
 ```
 
+> With this command, Zeek will run in standalone mode and by default will save logs in the current working directory. If you want to specify a different log directory, you can use the -l flag.
+
 <br>
 
 # Configuration:
-
-<br>
 
 To record logs in JSON format, edit the 'local.zeek' file by running:
 
@@ -75,26 +72,51 @@ Add the following entry at the end of the file and save changes:
 @load policy/tuning/json-logs
 ```
 
-Start the daemon:
+<br>
 
-```jsx
-sudo /opt/zeek/bin/zeekctl deploy
-sudo /opt/zeek/bin/zeekctl start
-sudo /opt/zeek/bin/zeekctl status
-sudo /opt/zeek/bin/zeekctl stop
-```
+# zeekctl:
 
-Change log directory:
+zeekctl (Zeek Control) is a command-line management tool for administering and managing Zeek deployments—especially in production environments.
+
+You can use Zeek as a daemon—i.e., running in the background continuously to monitor your network traffic—you’ll want to configure and manage it via zeekctl. This setup is ideal if you’re integrating Zeek as part of a real-time network monitoring system.
+
+Before we start, if you'd like to change log directory, edit the following line:
 
 ```jsx
 sudo nano /opt/zeek/etc/zeekctl.cfg
 ```
 
-Look for the line:
+Look for the following line, change accordingly, and save:
 
 ```jsx
 LogDir = /opt/zeek/logs
 ```
+
+To initiate and start the deamon:
+
+```jsx
+sudo /opt/zeek/bin/zeekctl deploy
+```
+
+To start Zeek as a daemon:
+
+```jsx
+sudo /opt/zeek/bin/zeekctl start
+```
+
+To check the status:
+
+```jsx
+sudo /opt/zeek/bin/zeekctl status
+```
+
+To stop the deamon:
+
+```jsx
+sudo /opt/zeek/bin/zeekctl stop
+```
+
+<br>
 
 # jq Command
 
