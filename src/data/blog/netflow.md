@@ -1,9 +1,9 @@
 ---
-title: "NetFlow: A Practical Guide"
+title: "NetFlow: Network Traffic Analyzer"
 description: "NetFlow for effective network traffic monitoring and analysis."
 pubDatetime: 2025-07-17T00:00:00Z
 featured: true
-tags: ["NetFlow", "Network Monitoring", "Installation", "Linux", "Telemetry"]
+tags: ["NetFlow", "Network Monitoring",]
 ---
 
 # Installation:
@@ -28,18 +28,19 @@ Start nfcapd to collect NetFlow data on port 9995 and run as a daemon:
 
 ```jsx
 sudo nfcapd -l /var/netflow -p 9995 -D
--D deamon mode
--R Can be used to relay NetFlow packets to a different collector rather than locally.
 ```
+
+- -D deamon mode
+- -R Can be used to relay NetFlow packets to a different collector rather than locally.
 
 Start softflowd on eth0, export to localhost:9995 using NetFlow v5:
 
 ```jsx
 sudo softflowd -i eth0 -n 127.0.0.1:9995 -v 5 -t maxlife=60
--n collector address and port
--v 5 NetFlow version
--t maxlife=60 specifies timeout and flow lifetime options (flow record exported at most every 60 seconds, even if active).
 ```
+- -n collector address and port
+- -v 5 NetFlow version
+- -t maxlife=60 specifies timeout and flow lifetime options (flow record exported at most every 60 seconds, even if active).
 
 Verify that port 9995 is open and receiving UDP traffic:
 
@@ -47,7 +48,7 @@ Verify that port 9995 is open and receiving UDP traffic:
 sudo netstat -anu | grep 9995
 ```
 
-Enable promiscuous mode on eth0 to capture all packets:
+To capture all packets on the network, enable promiscuous mode on eth0:
 
 ```jsx
 sudo ifconfig eth0 promisc

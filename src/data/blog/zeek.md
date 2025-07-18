@@ -1,5 +1,5 @@
 ---
-title: "Zeek: Passive Network Monitoring"
+title: "Zeek: Network Security Monitoring Tool"
 description: "How Zeek helps in large-scale network visibility."
 pubDatetime: 2025-07-17T00:00:00Z
 featured: true
@@ -66,6 +66,8 @@ Add the following entry at the end of the file and save changes:
 @load policy/tuning/json-logs
 ```
 
+> Saving Zeek output in JSON format enables efficient, structured, and automated forensic analysis by making the data easily parsable, searchable, and integrable with modern security tools.
+
 <br>
 
 # Execution:
@@ -104,6 +106,8 @@ To initiate and start the deamon for the first time:
 sudo /opt/zeek/bin/zeekctl deploy
 ```
 
+> You may also use the 'deploy' parameter for safe and proper redeployment, especially after config or script changes.
+
 In future executions, run the following to start Zeek as a daemon:
 
 ```jsx
@@ -123,6 +127,45 @@ sudo /opt/zeek/bin/zeekctl stop
 ```
 
 > zeekctl organizes logs into daily timestamped directories under the specified logs folder. Each day’s logs are stored separately, making it easy to review historical data. Additionally, zeekctl automatically compresses older logs (usually with gzip) to save disk space.
+
+To ensure auto-start upon reboot, create a custom service file for Zeek:
+
+```jsx
+sudo nano /etc/systemd/system/zeekctl.service
+```
+
+Paste the following content into the file:
+
+```jsx
+[Unit]
+Description=Zeek Network Security Monitor
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/opt/zeek/bin/zeekctl start
+ExecStop=/opt/zeek/bin/zeekctl stop
+ExecReload=/opt/zeek/bin/zeekctl deploy
+User=root
+WorkingDirectory=/opt/zeek
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Reload systemd to recognize the new service:
+
+```jsx
+sudo systemctl daemon-reexec
+sudo systemctl daemon-reload
+```
+
+Enable the service to run on boot:
+
+```jsx
+sudo systemctl enable zeekctl.service
+```
 
 <br>
 
