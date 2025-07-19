@@ -45,7 +45,10 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
       <p>
           I’m an academic researcher and cybersecurity professional specializing in network forensics,
           AI-driven threat detection, and IoT security. This blog is a collection of insights, tools, and practical lessons from real-world work and research.
+          You can also explore ongoing projects and publications at my lab page:{' '}
+          <a href="http://netml.github.io" target="_blank" style="text-decoration: underline;">NetML Lab</a>
       </p>
+
       {
         // only display if at least one social link is enabled
         SOCIALS.length > 0 && (
